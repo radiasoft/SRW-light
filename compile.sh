@@ -25,7 +25,7 @@ else
     cd $ext_dir
     # wget http://www.fftw.org/fftw-2.1.5.tar.gz
     wget https://raw.githubusercontent.com/ochubar/SRW/master/ext_lib/fftw-2.1.5.tar.gz
-    remove_ext_dir=1
+    remove_ext_dir="1"
 fi
 
 if [ -d "$fftw_dir" ]; then
@@ -58,7 +58,7 @@ echo ""
 
 #---> Clean:
 echo "    Cleaning..."
-if [ "$remove_ext_dir" -eq 1 ]; then
+if [ "$remove_ext_dir" == "1" ]; then
     rm -rf $ext_dir
 fi
 rm -rf $fftw_dir
