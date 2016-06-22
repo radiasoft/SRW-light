@@ -801,7 +801,7 @@ class SRWLBeamline(object):
         if hasattr(_v, 'fdir'): self.dir_main = _v.fdir
 
         #---setup electron beam
-        if hasattr(_v, 'ueb') or hasattr(_v, 'ebm_nm'):
+        if hasattr(_v, 'ueb') or hasattr(_v, 'ebm_nm'):  # MR20160617 - user-defined beam for Sirepo
             kwargs = {
                 '_e_beam_name': '',
                 '_i': _v.ebm_i,
@@ -815,7 +815,7 @@ class SRWLBeamline(object):
                 '_yp': _v.ebm_yp,
                 '_dE': _v.ebm_de,
             }
-            if hasattr(_v, 'ueb') and _v.ueb:  # MR20160617 - user-defined beam for Sirepo
+            if hasattr(_v, 'ueb') and _v.ueb:
                 user_defined_beam = SRWLPartBeam()
                 if _v.ueb_beam_definition == 't':
                     user_defined_beam.from_Twiss(
@@ -1606,7 +1606,7 @@ Various options can be specified including lists, e.g.:
 srwl_uti_parse_options = _optparse if os.getenv('SRWL_OPTPARSE') else _argparse  # MR07032016
 
 
-def setup_source(v):
+def setup_source(v):  # MR20160617 - moved from Sirepo .jinja template
     mag = None
     if v.source_type in ['u', 't']:
         if v.source_type == 'u' or (not v.und_g or v.und_g == 0):
