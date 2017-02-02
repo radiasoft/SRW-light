@@ -51,40 +51,7 @@ pylib:
 	cd $(py_dir); make python
 
 test:
-	remove_tmp_dir=0; \
-	if [ ! -d "$(example10_data_dir)" ]; then \
-	    mkdir $(example10_data_dir); \
-	    remove_tmp_dir=1; \
-	fi; \
-	cd $(examples_dir); \
-	timeout 20 python SRWLIB_Example10.py; \
-	code=$$?; \
-	RED=1; \
-	GREEN=2; \
-	if [ $$code -eq 0 ]; then \
-	    status='PASSED'; \
-	    color=$${GREEN}; \
-	    message=''; \
-	elif [ $$code -eq 124 ]; then \
-	    status='PASSED'; \
-	    color=$${GREEN}; \
-	    message=' (timeouted, expected)'; \
-	else \
-	    status='FAILED'; \
-	    color=$${RED}; \
-	    message=''; \
-	fi; \
-	echo -e -n "\n\tTest "; \
-	tput setaf $${color}; \
-	tput bold; \
-	echo -e -n "$${status}"; \
-	tput sgr0; \
-	echo -e ". Code=$${code}$${message}\n"; \
-	rm -f $(example10_data_dir)/{ex10_res_int_se.dat,ex10_res_int_prop_se.dat,ex10_res_int_prop_me.dat}; \
-	if [ $$remove_tmp_dir -eq 1 ]; then \
-	    cd $(root_dir); \
-	    rm -rf $(example10_data_dir); \
-	fi;
+	timeout_s=120 bash $(examples_dir)/basic-test.sh
 
 clean:
 	rm -f $(ext_dir)/libfftw.a $(gcc_dir)/libsrw.a $(gcc_dir)/srwlpy*.so; \
