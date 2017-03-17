@@ -44,7 +44,7 @@ fi
 python -u "$example_py" >& "$out" &
 pid=$!
 status='PASS'
-msg=' (timeout)'
+msg=" (timeout after $timeout_s seconds)"
 color=2 # green
 i=0
 while (( $i < $timeout_s )); do
@@ -69,6 +69,32 @@ while (( $i < $timeout_s )); do
     break
 done
 echo "$example_py: $(tput setaf $color)$(tput bold)$status$(tput sgr0)$msg"
+
+# Test of multielectron simulation for nan/inf values:
+example_py="multielectron_test.py"
+data_d="multielectron_test"
+out="${data_d}/${example_py}.log"
+
+# Start in examples directory
+cd "$(dirname "$0")"
+if [[ ! -d $data_d ]]; then
+    mkdir -p "$data_d"
+    to_remove+=( $data_d )
+fi
+
+python -u "$example_py" >& "$out"
+exit_code=$?
+status='PASS'
+msg=''
+color=2 # green
+if [[ "$exit_code" -gt 0 ]]; then
+    status='FAIL'
+    msg=' (data is not finite)'
+    color=1 # red
+fi
+code=$exit_code
+echo "$example_py: $(tput setaf $color)$(tput bold)$status$(tput sgr0)$msg"
+
 #TODO(robnagler) this should be generalized
 to_remove+=( $data_d/ex${ex_n}_res_{int_se,prop_se,prop_me}.dat )
 exit $code
