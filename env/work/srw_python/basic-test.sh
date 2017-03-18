@@ -69,6 +69,11 @@ while (( $i < $timeout_s )); do
     break
 done
 echo "$example_py: $(tput setaf $color)$(tput bold)$status$(tput sgr0)$msg"
+#TODO(robnagler) this should be generalized
+to_remove+=( $data_d/ex${ex_n}_res_{int_se,prop_se,prop_me}.dat )
+if [[ -n $exit ]]; then
+    exit $code
+fi
 
 # Test of multielectron simulation for nan/inf values:
 example_py="multielectron_test.py"
@@ -83,18 +88,17 @@ if [[ ! -d $data_d ]]; then
 fi
 
 python -u "$example_py" >& "$out"
-exit_code=$?
+code=$?
 status='PASS'
 msg=''
 color=2 # green
-if [[ "$exit_code" -gt 0 ]]; then
-    status='FAIL'
-    msg=' (data is not finite)'
+if [[ "$code" -gt 0 ]]; then
+    status=FAIL
+    msg=" (data is not finite)"
     color=1 # red
+    exit=1
 fi
-code=$exit_code
 echo "$example_py: $(tput setaf $color)$(tput bold)$status$(tput sgr0)$msg"
-
-#TODO(robnagler) this should be generalized
-to_remove+=( $data_d/ex${ex_n}_res_{int_se,prop_se,prop_me}.dat )
-exit $code
+if [[ -n $exit ]]; then
+    exit $code
+fi
