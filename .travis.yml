@@ -1,0 +1,7 @@
+---
+language: bash
+branches:
+  only:
+    - master
+script:
+  - curl radia.run | build_travis_trigger_only=1 bash -s container-build beamsim
