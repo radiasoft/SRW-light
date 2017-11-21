@@ -100,7 +100,7 @@ class SRWLUtiSmp:
             from scipy.ndimage.interpolation import rotate
         except ImportError:
             raise ImportError(import_err_msg.format('SciPy', 'scipy'))
-        
+
         d = uti_io.read_image(image_path=self.file_path)
         self.data = d['data']
         self.raw_image = d['raw_image']
