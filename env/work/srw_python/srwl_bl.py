@@ -284,7 +284,7 @@ class SRWLBeamline(object):
             if(self.mag_approx is not None):
                 del self.mag_approx
 
-        if(self.mag_approx is None): self.mag_approx = SRWLMagFldC()
+        if(not hasattr(self, 'mag_approx') or self.mag_approx is None): self.mag_approx = SRWLMagFldC()
 
         und = SRWLMagFldU()
         und.set_sin(_per, _len, _bx, _by, _phx, _phy, _sx, _sy)
