@@ -1,1 +1,1 @@
-Copy of https://github.com/ochubar/SRW for RadiaSoft internal builds.
+Use https://github.com/ochubar/SRW. This site no longer in use.
