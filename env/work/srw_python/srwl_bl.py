@@ -289,7 +289,7 @@ class SRWLBeamline(object):
             if(self.mag_approx is not None):
                 del self.mag_approx
 
-        if(self.mag_approx is None): self.mag_approx = SRWLMagFldC()
+        if(not hasattr(self, 'mag_approx') or self.mag_approx is None): self.mag_approx = SRWLMagFldC()
 
         und = SRWLMagFldU()
         und.set_sin(_per, _len, _bx, _by, _phx, _phy, _sx, _sy)
@@ -3175,6 +3175,10 @@ def setup_source(v):  #MR20160617 - moved from Sirepo .jinja template
                 del v.und_g
             if hasattr(v, 'gbm_pen'):
                 del v.gbm_pen
+            und = SRWLMagFldU([SRWLMagFldH(1, 'v', v.und_by, v.und_phy, v.und_sy, 1), \
+                  SRWLMagFldH(1, 'h', v.und_bx, v.und_phx,  v.und_sx, 1)], v.und_per,  v.und_per)
+            mag = SRWLMagFldC([und], array('d', [0]), array('d', [0]), array('d', [0]))  #BN20180515 - output und structure
+                  
         elif v.source_type == 't' or (v.und_g and v.und_g > 0):
             if hasattr(v, 'gbm_pen'):
                 del v.gbm_pen
